@@ -15,6 +15,7 @@
 *.pot
 *.so*
 *.dylib
+*.d
 .*.swp
 .depend
 .DS_Store
