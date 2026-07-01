@@ -865,6 +865,7 @@ static int validate_parameters( x264_t *h, int b_open )
         h->param.analyse.i_chroma_qp_offset = type > 2 ? -4 : res && type ? 3 : 4;
         h->param.b_cabac = !type;
         h->param.rc.i_vbv_buffer_size = avcintra_lut[type][res][i].frame_size;
+        h->param.rc.i_max_frame_size = -1;
         h->param.rc.i_vbv_max_bitrate =
         h->param.rc.i_bitrate = h->param.rc.i_vbv_buffer_size * fps_num / fps_den;
         h->param.rc.i_rc_method = X264_RC_ABR;

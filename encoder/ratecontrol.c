@@ -1489,6 +1489,10 @@ void x264_ratecontrol_start( x264_t *h, int i_force_qp, int overhead )
                 rc->frame_size_maximum = 384 * BIT_DEPTH * ((double)h->fenc->i_cpb_duration * h->sps->vui.i_num_units_in_tick / h->sps->vui.i_time_scale) * l->mbps / mincr;
             }
         }
+
+        /* Clamp maximum individual frame size. */
+        if ( h->param.rc.i_max_frame_size > 0 )
+            rc->frame_size_maximum = X264_MIN( rc->frame_size_maximum, h->param.rc.i_max_frame_size * 8 );
     }
 
     if( h->sh.i_type != SLICE_TYPE_B )
