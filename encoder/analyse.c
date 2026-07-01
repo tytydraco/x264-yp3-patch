@@ -1325,7 +1325,7 @@ static void mb_analyse_inter_p16x16( x264_t *h, x264_mb_analysis_t *a )
             h->mb.i_partition = D_16x16;
             x264_macroblock_cache_mv_ptr( h, 0, 0, 4, 4, 0, a->l0.me16x16.mv );
             a->l0.i_rd16x16 = rd_cost_mb( h, a->i_lambda2 );
-            if( !(h->mb.i_cbp_luma|h->mb.i_cbp_chroma) )
+            if( h->param.i_bframe && !(h->mb.i_cbp_luma|h->mb.i_cbp_chroma) )
                 h->mb.i_type = P_SKIP;
         }
     }
@@ -2975,7 +2975,7 @@ intra_analysis:
                 {
                     h->mb.i_partition = D_16x16;
                     /* Use the P-SKIP MV if we can... */
-                    if( !M32(h->mb.cache.pskip_mv) )
+                    if( h->param.i_bframe && !M32(h->mb.cache.pskip_mv) )
                     {
                         b_skip = 1;
                         h->mb.i_type = P_SKIP;
@@ -3016,7 +3016,7 @@ intra_analysis:
 
         h->mc.prefetch_ref( h->mb.pic.p_fref[0][0][h->mb.i_mb_x&3], h->mb.pic.i_stride[0], 1 );
 
-        if( b_skip )
+        if( b_skip && h->param.i_bframe )
         {
             h->mb.i_type = P_SKIP;
             h->mb.i_partition = D_16x16;

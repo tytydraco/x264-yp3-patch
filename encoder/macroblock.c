@@ -619,7 +619,8 @@ static ALWAYS_INLINE void macroblock_encode_internal( x264_t *h, int plane_count
 {
     int i_qp = h->mb.i_qp;
     int b_decimate = h->mb.b_dct_decimate;
-    int b_force_no_skip = 0;
+    /* Legacy decoder: P_SKIP breaks disposable-P streams. */
+    int b_force_no_skip = !h->param.i_bframe;
     int nz;
     h->mb.i_cbp_luma = 0;
     for( int p = 0; p < plane_count; p++ )
@@ -1128,6 +1129,9 @@ static ALWAYS_INLINE int macroblock_probe_skip_internal( x264_t *h, int b_bidir,
 
 int x264_macroblock_probe_skip( x264_t *h, int b_bidir )
 {
+    if( !b_bidir && !h->param.i_bframe )
+        return 0;
+
     if( CHROMA_FORMAT == CHROMA_420 )
         return macroblock_probe_skip_internal( h, b_bidir, 1, CHROMA_420 );
     else if( CHROMA_FORMAT == CHROMA_422 )
