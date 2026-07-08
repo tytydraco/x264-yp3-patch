@@ -396,6 +396,11 @@ void x264_adaptive_quant_frame( x264_t *h, x264_frame_t *frame, float *quant_off
                 }
                 if( quant_offsets )
                     qp_adj += quant_offsets[mb_xy];
+
+                /* Apply tanh smoothing function after AQ */
+                if (h->param.rc.f_aq_tanh > 0)
+                    qp_adj = h->param.rc.f_aq_tanh * tanhf(qp_adj / h->param.rc.f_aq_tanh);
+                
                 frame->f_qp_offset[mb_xy] =
                 frame->f_qp_offset_aq[mb_xy] = qp_adj;
                 if( h->frames.b_have_lowres )

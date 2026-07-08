@@ -752,6 +752,7 @@ static void help( x264_param_t *defaults, int longhelp )
         "                                  - 3: Auto-variance AQ with bias to dark scenes\n", defaults->rc.i_aq_mode );
     H1( "      --aq-strength <float>   Reduces blocking and blurring in flat and\n"
         "                              textured areas. [%.1f]\n", defaults->rc.f_aq_strength );
+    H1( "      --aq-tanh <float>       Apply a tanh smoothing function after AQ [%.2f]\n", defaults->rc.f_aq_tanh );
     H1( "\n" );
     H0( "  -p, --pass <integer>        Enable multipass ratecontrol\n"
         "                                  - 1: First pass, creates stats file\n"

@@ -414,6 +414,7 @@ REALIGN_STACK void x264_param_default( x264_param_t *param )
     param->rc.f_ip_factor = 1.4;
     param->rc.f_pb_factor = 1.3;
     param->rc.i_aq_mode = X264_AQ_VARIANCE;
+    param->rc.f_aq_tanh = 0;
     param->rc.f_aq_strength = 1.0;
     param->rc.i_lookahead = 40;
 
@@ -1349,6 +1350,8 @@ REALIGN_STACK int x264_param_parse( x264_param_t *p, const char *name, const cha
         p->rc.i_aq_mode = atoi(value);
     OPT("aq-strength")
         p->rc.f_aq_strength = atof(value);
+    OPT("aq-tanh")
+        p->rc.f_aq_tanh = atof(value);
     OPT("pass")
     {
         int pass = x264_clip3( atoi(value), 0, 3 );
