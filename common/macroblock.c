@@ -1269,7 +1269,7 @@ static ALWAYS_INLINE void macroblock_cache_load( x264_t *h, int mb_x, int mb_y, 
 
     /* Check whether skip here would cause decoder to predict interlace mode incorrectly.
      * FIXME: It might be better to change the interlace type rather than forcing a skip to be non-skip. */
-    h->mb.b_allow_skip = 1;
+    h->mb.b_allow_skip = 0;
     if( b_mbaff )
     {
         if( MB_INTERLACED != h->mb.field_decoding_flag &&
