@@ -179,7 +179,7 @@ void x264_sps_init( x264_sps_t *sps, int i_id, x264_param_t *param )
             sps->i_log2_max_poc_lsb++;
     }
 
-    sps->b_vui = 1;
+    sps->b_vui = 0;
 
     sps->b_gaps_in_frame_num_value_allowed = 0;
     sps->b_mb_adaptive_frame_field = param->b_interlaced;
