@@ -445,7 +445,7 @@ REALIGN_STACK void x264_param_default( x264_param_t *param )
     param->analyse.b_mixed_references = 1;
     param->analyse.b_chroma_me = 1;
     param->analyse.i_mv_range_thread = -1;
-    param->analyse.i_mv_range = -1; // set from level_idc
+    param->analyse.i_mv_range = 16;
     param->analyse.i_chroma_qp_offset = 0;
     param->analyse.b_fast_pskip = 1;
     param->analyse.b_weighted_bipred = 1;
