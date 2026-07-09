@@ -179,7 +179,7 @@ void x264_sps_init( x264_sps_t *sps, int i_id, x264_param_t *param )
             sps->i_log2_max_poc_lsb++;
     }
 
-    sps->b_vui = 1;
+    sps->b_vui = 0;
 
     sps->b_gaps_in_frame_num_value_allowed = 0;
     sps->b_mb_adaptive_frame_field = param->b_interlaced;
@@ -494,7 +494,7 @@ void x264_pps_init( x264_pps_t *pps, int i_id, x264_param_t *param, x264_sps_t *
     pps->i_pic_init_qp = param->rc.i_rc_method == X264_RC_ABR || param->b_stitchable ? 26 + QP_BD_OFFSET : SPEC_QP( param->rc.i_qp_constant );
     pps->i_pic_init_qs = 26 + QP_BD_OFFSET;
 
-    pps->i_chroma_qp_index_offset = param->analyse.i_chroma_qp_offset;
+    pps->i_chroma_qp_index_offset = 0;
     pps->b_deblocking_filter_control = 1;
     pps->b_constrained_intra_pred = param->b_constrained_intra;
     pps->b_redundant_pic_cnt = 0;
@@ -592,6 +592,8 @@ void x264_sei_recovery_point_write( x264_t *h, bs_t *s, int recovery_frame_cnt )
 
 int x264_sei_version_write( x264_t *h, bs_t *s )
 {
+    return 0;
+
     // random ID number generated according to ISO-11578
     static const uint8_t uuid[16] =
     {
