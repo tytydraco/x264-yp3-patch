@@ -592,6 +592,8 @@ void x264_sei_recovery_point_write( x264_t *h, bs_t *s, int recovery_frame_cnt )
 
 int x264_sei_version_write( x264_t *h, bs_t *s )
 {
+    return 0;
+
     // random ID number generated according to ISO-11578
     static const uint8_t uuid[16] =
     {
