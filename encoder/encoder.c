@@ -3535,7 +3535,7 @@ int     x264_encoder_encode( x264_t *h,
     else if( h->fenc->i_type == X264_TYPE_P )
     {
         i_nal_type    = NAL_SLICE;
-        i_nal_ref_idc = NAL_PRIORITY_HIGH; /* Not completely true but for now it is (as all I/P are kept as ref)*/
+        i_nal_ref_idc = NAL_PRIORITY_DISPOSABLE; /* Not completely true but for now it is (as all I/P are kept as ref)*/
         h->sh.i_type = SLICE_TYPE_P;
         reference_hierarchy_reset( h );
         h->frames.i_poc_last_open_gop = -1;
