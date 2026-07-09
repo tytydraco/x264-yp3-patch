@@ -404,7 +404,6 @@ REALIGN_STACK void x264_param_default( x264_param_t *param )
     param->rc.f_rate_tolerance = 1.0;
     param->rc.i_vbv_max_bitrate = 0;
     param->rc.i_vbv_buffer_size = 0;
-    param->rc.i_max_frame_size = -1;
     param->rc.f_vbv_buffer_init = 0.9;
     param->rc.i_qp_constant = -1;
     param->rc.f_rf_constant = 23;
@@ -1337,8 +1336,6 @@ REALIGN_STACK int x264_param_parse( x264_param_t *p, const char *name, const cha
         p->rc.i_vbv_max_bitrate = atoi(value);
     OPT("vbv-bufsize")
         p->rc.i_vbv_buffer_size = atoi(value);
-    OPT("max-frame-size")
-        p->rc.i_max_frame_size = atoi(value);
     OPT("vbv-init")
         p->rc.f_vbv_buffer_init = atof(value);
     OPT2("ipratio", "ip-factor")
@@ -1525,8 +1522,8 @@ char *x264_param2string( x264_param_t *p, int b_res )
                           p->rc.f_complexity_blur, p->rc.f_qblur );
         if( p->rc.i_vbv_buffer_size )
         {
-            s += sprintf( s, " vbv_maxrate=%d vbv_bufsize=%d max_frame_size=%d",
-                          p->rc.i_vbv_max_bitrate, p->rc.i_vbv_buffer_size, p->rc.i_max_frame_size );
+            s += sprintf( s, " vbv_maxrate=%d vbv_bufsize=%d",
+                          p->rc.i_vbv_max_bitrate, p->rc.i_vbv_buffer_size );
             if( p->rc.i_rc_method == X264_RC_CRF )
                 s += sprintf( s, " crf_max=%.1f", p->rc.f_rf_constant_max );
         }
