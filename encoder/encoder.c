@@ -1266,8 +1266,7 @@ static int validate_parameters( x264_t *h, int b_open )
         if( h->param.analyse.i_mv_range <= 0 )
             h->param.analyse.i_mv_range = l->mv_range >> PARAM_INTERLACED;
         else
-            /* Allow mvrange below x264's 32px floor (device mishandles large MVs). */
-            h->param.analyse.i_mv_range = x264_clip3(h->param.analyse.i_mv_range, 4, 8192 >> PARAM_INTERLACED);
+            h->param.analyse.i_mv_range = x264_clip3(h->param.analyse.i_mv_range, 32, 8192 >> PARAM_INTERLACED);
     }
 
     h->param.analyse.i_weighted_pred = x264_clip3( h->param.analyse.i_weighted_pred, X264_WEIGHTP_NONE, X264_WEIGHTP_SMART );
@@ -2632,8 +2631,7 @@ static inline void slice_init( x264_t *h, int i_nal_type, int i_global_qp )
             }
         }
         else
-            /* Constant idr_pic_id: toggling breaks scenecut IDRs on legacy decoders. */
-            h->i_idr_pic_id = 0;
+            h->i_idr_pic_id ^= 1;
     }
     else
     {
@@ -3538,8 +3536,7 @@ int     x264_encoder_encode( x264_t *h,
     else if( h->fenc->i_type == X264_TYPE_P )
     {
         i_nal_type    = NAL_SLICE;
-        /* P-slices are not stored as references (nal_ref_idc=0). */
-        i_nal_ref_idc = NAL_PRIORITY_DISPOSABLE;
+        i_nal_ref_idc = NAL_PRIORITY_HIGH; /* Not completely true but for now it is (as all I/P are kept as ref)*/
         h->sh.i_type = SLICE_TYPE_P;
         reference_hierarchy_reset( h );
         h->frames.i_poc_last_open_gop = -1;

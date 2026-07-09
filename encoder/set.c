@@ -170,24 +170,16 @@ void x264_sps_init( x264_sps_t *sps, int i_id, x264_param_t *param )
     while( (1 << sps->i_log2_max_frame_num) <= max_frame_num )
         sps->i_log2_max_frame_num++;
 
-    /* Required with disposable-P: explicit pic_order_cnt_lsb on every slice. */
-    sps->i_poc_type = 0;
+    sps->i_poc_type = param->i_bframe || param->b_interlaced || param->i_avcintra_class ? 0 : 2;
     if( sps->i_poc_type == 0 )
     {
         int max_delta_poc = (param->i_bframe + 2) * (!!param->i_bframe_pyramid + 1) * 2;
-        /* Without B-frames, pic_order_cnt_lsb increments by 2 each frame up to keyint. */
-        if( !param->i_bframe && !param->b_interlaced && !param->i_avcintra_class )
-            max_delta_poc = X264_MAX( max_delta_poc, param->i_keyint_max * 2 );
         sps->i_log2_max_poc_lsb = 4;
         while( (1 << sps->i_log2_max_poc_lsb) <= max_delta_poc * 2 )
             sps->i_log2_max_poc_lsb++;
-        /* Vendor SPS uses log2_max_pic_order_cnt_lsb=9. */
-        if( sps->i_log2_max_poc_lsb < 9 )
-            sps->i_log2_max_poc_lsb = 9;
     }
 
-    /* Do not signal VUI in SPS. */
-    sps->b_vui = 0;
+    sps->b_vui = 1;
 
     sps->b_gaps_in_frame_num_value_allowed = 0;
     sps->b_mb_adaptive_frame_field = param->b_interlaced;
@@ -502,7 +494,7 @@ void x264_pps_init( x264_pps_t *pps, int i_id, x264_param_t *param, x264_sps_t *
     pps->i_pic_init_qp = param->rc.i_rc_method == X264_RC_ABR || param->b_stitchable ? 26 + QP_BD_OFFSET : SPEC_QP( param->rc.i_qp_constant );
     pps->i_pic_init_qs = 26 + QP_BD_OFFSET;
 
-    pps->i_chroma_qp_index_offset = 0;
+    pps->i_chroma_qp_index_offset = param->analyse.i_chroma_qp_offset;
     pps->b_deblocking_filter_control = 1;
     pps->b_constrained_intra_pred = param->b_constrained_intra;
     pps->b_redundant_pic_cnt = 0;
